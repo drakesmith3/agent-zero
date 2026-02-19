@@ -46,7 +46,8 @@
       width: 250px;
       min-width: 250px;
       color: var(--color-text);
-      box-shadow: 1px 0 5px rgba(0, 0, 0, 0.3);
+      box-shadow: var(--elevation-2);
+      backdrop-filter: blur(6px);
       user-select: none;
       -webkit-user-select: none;
       /* Safari compatibility */
@@ -83,7 +84,7 @@
       /* Critical for allowing flex children to shrink */
       overflow: hidden;
       justify-content: space-between;
-      margin-top: 3.5rem;
+      margin-top: 3.8rem;
       padding: var(--spacing-md) var(--spacing-md) 0 var(--spacing-md);
     }
 

@@ -28,8 +28,37 @@ const model = {
   settings: null,
   additional: null,
   workdirFileStructureTestOutput: "",
+  tabFilter: "",
   
   // Tab state
+  _tabLabelByKey: Object.freeze({
+    agent: "Agent Settings",
+    skills: "Skills",
+    external: "External Services",
+    mcp: "MCP/A2A",
+    developer: "Developer",
+    backup: "Backup & Restore",
+  }),
+
+  get filteredTabs() {
+    const q = (this.tabFilter || "").trim().toLowerCase();
+    const all = ["agent", "skills", "external", "mcp", "developer", "backup"];
+    if (!q) return all;
+    return all.filter((tab) => (this._tabLabelByKey[tab] || tab).toLowerCase().includes(q));
+  },
+
+  get hasTabFilterMatches() {
+    return this.filteredTabs.length > 0;
+  },
+
+  setTabFilter(value) {
+    this.tabFilter = (value || "").trim();
+    const visible = this.filteredTabs;
+    if (visible.length > 0 && !visible.includes(this.activeTab)) {
+      this.activeTab = visible[0];
+    }
+  },
+
   _activeTab: DEFAULT_TAB,
   get activeTab() {
     return this._activeTab;
@@ -51,6 +80,7 @@ const model = {
 
   async onOpen() {
     this.error = null;
+    this.setTabFilter("");
     this.isLoading = true;
     
     try {
@@ -77,6 +107,7 @@ const model = {
     this.settings = null;
     this.additional = null;
     this.error = null;
+    this.setTabFilter("");
     this.isLoading = false;
   },
 

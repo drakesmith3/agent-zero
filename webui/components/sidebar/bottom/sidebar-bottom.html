@@ -13,6 +13,10 @@
         
         <!-- Version Info -->
         <div class="version-info">
+          <div class="brand-footer">
+            <span class="brand-name">AgentStation</span>
+            <span class="brand-powered">Powered by Enzotech</span>
+          </div>
           <span id="a0version" x-text="$store.sidebarBottom.versionLabel"></span>
         </div>
       </div>
@@ -29,6 +33,9 @@
     }
 
     /* Version label area */
+    .brand-footer { display: flex; flex-direction: column; margin-bottom: 0.35rem; }
+    .brand-name { font-size: 0.83rem; font-weight: 600; }
+    .brand-powered { font-size: 0.68rem; color: var(--color-text-muted); letter-spacing: 0.03em; }
     .version-info {
       line-height: 0.8rem;
       position: relative;

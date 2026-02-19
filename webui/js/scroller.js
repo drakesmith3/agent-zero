@@ -166,7 +166,7 @@ export class Scroller {
 
       const expected = this._getReapplyScrollSnapshot();
       delete this.element.dataset.scrollerReapplySnapshot;
-      if (expected != null && this._getEffectiveScrollTop() !== expected) return;
+      if (expected != null && Math.abs(this._getEffectiveScrollTop() - expected) > 2) return;
 
       if (!this.wasAtBottom) return;
       if (!this.isAtBottom()) return;

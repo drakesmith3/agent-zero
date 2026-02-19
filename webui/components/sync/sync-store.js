@@ -449,8 +449,16 @@ const model = {
       return;
     }
 
+    if (!envelope || typeof envelope !== "object") {
+      debug("[syncStore] ignored malformed state_push envelope", envelope);
+      return;
+    }
+
     const data = envelope && envelope.data ? envelope.data : null;
-    if (!data || typeof data !== "object") return;
+    if (!data || typeof data !== "object") {
+      debug("[syncStore] ignored state_push without data payload", envelope);
+      return;
+    }
 
     if (typeof data.runtime_epoch === "string") {
       if (this.runtimeEpoch && this.runtimeEpoch !== data.runtime_epoch) {
