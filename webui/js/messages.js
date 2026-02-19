@@ -73,6 +73,7 @@ export function getMessageHandler(type) {
 // entrypoint called from poll/WS communication, this is how all messages are rendered and updated
 // input is raw log format
 export function setMessages(messages) {
+  if (!Array.isArray(messages) || messages.length === 0) return;
   // set _massRender flag for handlers to know how to behave
   const history = getChatHistoryEl();
   const historyEmpty = !history || history.childElementCount === 0;
@@ -92,7 +93,9 @@ export function setMessages(messages) {
   // process messages
   for (let i = 0; i < messages.length; i++) {
     _massRender = historyEmpty || (isLargeAppend && i < cutoff);
-    results.push(setMessage(messages[i]) || {});
+    const nextMessage = messages[i];
+    if (!nextMessage || typeof nextMessage !== "object") continue;
+    results.push(setMessage(nextMessage) || {});
   }
 
   // reset _massRender flag

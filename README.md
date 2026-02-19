@@ -66,6 +66,14 @@ docker run -p 50001:80 agent0ai/agent-zero
 # Visit http://localhost:50001 to start
 ```
 
+Local source run (for pre-cloud verification):
+
+```bash
+git clone https://github.com/agent0ai/agent-zero.git
+cd agent-zero
+python run_ui.py
+```
+
 
 # 💡 Key Features
 
@@ -163,6 +171,10 @@ docker run -p 50001:80 agent0ai/agent-zero
 | [Architecture](./docs/developer/architecture.md) | System design and components |
 | [Contributing](./docs/guides/contribution.md) | How to contribute |
 | [Troubleshooting](./docs/guides/troubleshooting.md) | Common issues and their solutions |
+| [Testing Deploy (No Auth)](./docs/setup/deployment-testing-no-auth.md) | Fast deployment and interface access guide for test environments |
+| [Platform Test Matrix](./docs/qa/platform-test-matrix.md) | Release readiness checklist across backend, UI, sessions, files, scheduler, and security |
+| [SaaS Sprint Plan](./docs/saas/agentstation-implementation-sprints.md) | Practical 3-sprint implementation roadmap for tenancy, reliability, and differentiation |
+| [Pricing Plan Draft](./docs/saas/agentstation-pricing-plan-draft.md) | Draft pricing model and guardrails for staged rollout |
 
 
 ## 🎯 Changelog

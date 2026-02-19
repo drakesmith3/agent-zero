@@ -11,11 +11,17 @@
         <template x-if="$store.welcomeStore && $store.welcomeStore.isVisible">
             <div x-create="$store.welcomeStore.onCreate()" class="welcome-container">
                 <div class="welcome-content">
+                <div class="welcome-hero">
+                    <div class="welcome-pill">AgentStation</div>
+                    <h1 class="welcome-title">Mission control for autonomous workflows</h1>
+                    <p class="welcome-subtitle">Powered by Enzotech · Start a session, manage projects, and monitor execution from one streamlined workspace.</p>
+                </div>
+
                     <!-- Action Cards -->
                     <div class="welcome-actions">
                         <div class="welcome-action-card" @click="$store.welcomeStore.executeAction('new-chat')">
                             <span class="material-symbols-outlined welcome-action-icon">add_circle</span>
-                            <h3 class="welcome-action-title">New Chat</h3>
+                            <h3 class="welcome-action-title">Start Session</h3>
                         </div>
 
                         <div class="welcome-action-card" @click="$store.welcomeStore.executeAction('projects')">
@@ -42,11 +48,11 @@
                         </div>
                         <div class="welcome-action-card" @click="$store.welcomeStore.executeAction('website')">
                             <span class="material-symbols-outlined welcome-action-icon">language</span>
-                            <h3 class="welcome-action-title">Visit Website</h3>
+                            <h3 class="welcome-action-title">Website</h3>
                         </div>
                         <div class="welcome-action-card" @click="$store.welcomeStore.executeAction('github')">
                             <span class="material-symbols-outlined welcome-action-icon">code</span>
-                            <h3 class="welcome-action-title">Visit GitHub</h3>
+                            <h3 class="welcome-action-title">GitHub</h3>
                         </div>
                     </div>
 
@@ -119,7 +125,7 @@
             content: "";
             position: absolute;
             inset: 0;
-            background-image: url("./public/darkSymbol.svg");
+            background-image: url("./public/agentstation-logo.svg");
             background-repeat: no-repeat;
             background-position: center;
             background-size: 80% auto;
@@ -146,6 +152,26 @@
             align-items: center;
         }
 
+        .welcome-hero {
+            width: min(760px, 100%);
+            margin-bottom: 0.8rem;
+        }
+
+        .welcome-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.25rem 0.7rem;
+            border-radius: 999px;
+            border: 1px solid color-mix(in srgb, var(--color-highlight) 55%, transparent);
+            background: color-mix(in srgb, var(--color-highlight) 16%, transparent);
+            color: var(--color-text);
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+        }
+
         /* Welcome container styles */
         .welcome-logo-container {
             display: flex;
@@ -168,9 +194,9 @@
         }
 
         .welcome-title {
-            font-size: 2rem;
-            font-weight: 400;
-            margin: var(--spacing-xs) 0 0 0;
+            font-size: clamp(1.55rem, 3.2vw, 2.3rem);
+            font-weight: 560;
+            margin: 0;
             color: var(--color-text);
         }
 
@@ -179,10 +205,10 @@
         }
 
         .welcome-subtitle {
-            font-size: 1rem;
-            margin-bottom: 2rem;
-            color: var(--color-secondary);
-            max-width: 600px;
+            font-size: 0.98rem;
+            margin: 0 auto 1.4rem;
+            color: var(--color-text-muted);
+            max-width: 760px;
             line-height: 1.5;
         }
 
@@ -190,13 +216,13 @@
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 1rem;
-            max-width: 640px;
+            max-width: 760px;
             width: 100%;
             margin: 1.5rem 0;
         }
 
         .welcome-actions-footer {
-            max-width: 640px;
+            max-width: 760px;
             width: 100%;
             display: flex;
             justify-content: flex-start;
@@ -220,7 +246,7 @@
 
         .welcome-refresh-button:hover {
             border-color: var(--color-primary);
-            background: var(--color-message-bg);
+            background: color-mix(in srgb, var(--color-highlight) 10%, var(--color-panel));
             color: var(--color-text);
         }
 
@@ -243,10 +269,10 @@
         }
 
         .welcome-action-card {
-            background: var(--color-panel);
+            background: color-mix(in srgb, var(--color-panel) 88%, transparent);
             border: 1px solid var(--color-border);
-            border-radius: 12px;
-            padding: 0.6rem;
+            border-radius: 14px;
+            padding: 0.7rem;
             transition: all 0.3s ease;
             cursor: pointer;
             text-decoration: none;
@@ -261,17 +287,17 @@
 
         .welcome-action-card:hover {
             border-color: var(--color-primary);
-            background: var(--color-message-bg);
+            background: color-mix(in srgb, var(--color-highlight) 10%, var(--color-panel));
         }
 
         .welcome-action-icon {
             font-size: 2.1rem;
             margin-bottom: 0.25rem;
-            color: var(--color-highlight-dark);
+            color: var(--color-highlight);
         }
 
         .welcome-action-title {
-            font-size: 0.9rem;
+            font-size: 0.86rem;
         }
 
         /* Banner Styles */
@@ -349,7 +375,7 @@
 
         .welcome-banner-title {
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.86rem;
             color: var(--color-text);
             margin-bottom: 4px;
             line-height: 1.3;
@@ -368,7 +394,7 @@
         }
 
         .welcome-banner-html a:hover {
-            color: var(--color-highlight-dark);
+            color: var(--color-highlight);
         }
 
         .welcome-banner-html strong {
@@ -463,7 +489,7 @@
             }
 
             .welcome-actions {
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(3, 1fr);
                 gap: 0.75rem;
                 margin-bottom: 1.5rem;
             }

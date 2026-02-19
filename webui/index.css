@@ -8,21 +8,25 @@
 }
 
 :root {
+  /* Brand */
+  --brand-name: "AgentStation";
+  --brand-tagline: "Powered by Enzotech";
+
   /* Dark mode */
-  --color-background-dark: #131313;
-  --color-text-dark: #ffffff;
-  --color-text-muted-dark: #d4d4d4e4;
-  --color-primary-dark: #737a81;
-  --color-secondary-dark: #656565;
-  --color-accent-dark: #cf6679;
-  --color-message-bg-dark: #2d2d2d;
-  --color-highlight-dark: #2b5ab9;
+  --color-background-dark: #0b1020;
+  --color-text-dark: #e8eeff;
+  --color-text-muted-dark: #afbddb;
+  --color-primary-dark: #8aa0ff;
+  --color-secondary-dark: #111a34;
+  --color-accent-dark: #7dd3fc;
+  --color-message-bg-dark: #131d3c;
+  --color-highlight-dark: #4f7cff;
   --color-message-text-dark: #e0e0e0;
-  --color-panel-dark: #1a1a1a;
-  --color-border-dark: #444444a8;
-  --color-input-dark: #131313;
-  --color-input-focus-dark: #101010;
-  --color-chat-background-dark: #212121;
+  --color-panel-dark: #0f172d;
+  --color-border-dark: rgba(138, 160, 255, 0.28);
+  --color-input-dark: #0a1226;
+  --color-input-focus-dark: #121e3f;
+  --color-chat-background-dark: #070d1b;
   --color-error-text-dark:#e72323;
   --color-warning-text-dark:#e79c23;
   --color-table-row-dark: #272727;
@@ -86,7 +90,11 @@
   --font-family-code: "Roboto Mono", monospace;
 
   /* Other variables */
-  --border-radius: 1.125rem;
+  --border-radius: 1rem;
+  --radius-lg: 1.25rem;
+  --elevation-1: 0 6px 18px rgba(2, 8, 25, 0.35);
+  --elevation-2: 0 12px 30px rgba(2, 8, 25, 0.45);
+  --focus-ring: 0 0 0 0.18rem color-mix(in srgb, var(--color-highlight) 55%, transparent);
   --border-radius-sm: 0.5rem;
   --transition-speed: 0.3s;
   --svg-filter: brightness(0) saturate(100%) var(--color-primary-filter);
@@ -136,6 +144,7 @@ html {
 
 body {
   overscroll-behavior: none;
+  background: radial-gradient(circle at top, color-mix(in srgb, var(--color-highlight) 13%, transparent), transparent 45%), var(--color-background);
   -webkit-overscroll-behavior: none;
 }
 
@@ -151,6 +160,19 @@ body,
   -webkit-transition: background-color 0.3s, color 0.3s, border-color 0.3s;
   transition: background-color 0.3s, color 0.3s, border-color 0.3s;
   color: var(--color-text) !important;
+}
+
+
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-color: var(--color-highlight);
 }
 
 /* Bootstrap-like tooltips */
@@ -398,6 +420,7 @@ img {
   width: 100%;
   flex-direction: column;
   flex-grow: 1;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--color-highlight) 7%, transparent), transparent 24%);
   -webkit-transition: margin-left var(--transition-speed) ease-in-out;
   transition: margin-left var(--transition-speed) ease-in-out;
 }
@@ -428,12 +451,20 @@ div#right-panel::-webkit-scrollbar-thumb:hover {
   align-items: center;
   gap: var(--spacing-sm);
   margin-top: var(--spacing-md);
+  padding: 0.35rem 0.45rem 0.35rem 0.65rem;
+  border: 1px solid color-mix(in srgb, var(--color-highlight) 38%, transparent);
+  border-radius: 0.85rem;
+  background: color-mix(in srgb, var(--color-panel) 82%, transparent);
+  box-shadow: var(--elevation-1);
+  backdrop-filter: blur(6px);
 }
 
 #time-date {
   color: var(--color-text);
   text-align: right;
   line-height: 1.2;
+  font-size: 0.82rem;
+  min-width: 9rem;
 }
 
 #user-date {
@@ -442,6 +473,23 @@ div#right-panel::-webkit-scrollbar-thumb:hover {
   font-weight: 400;
   display: block;
   margin-top: 2px;
+}
+
+
+@media (max-width: 768px) {
+  #time-date-container {
+    left: 4.2rem;
+    right: 0.6rem;
+    margin-top: 0.55rem;
+    min-height: 2.35rem;
+    justify-content: flex-end;
+    padding: 0.22rem 0.32rem 0.22rem 0.45rem;
+  }
+
+  #time-date {
+    min-width: auto;
+    font-size: 0.75rem;
+  }
 }
 
 /* Typography */
