@@ -1,27 +1,22 @@
 <html>
 
 <head>
-    <title>Projects</title>
+    <title>Projects list</title>
+
+    <!-- Import the alpine store -->
     <script type="module">
-        import { store as projectsStore } from "/components/projects/projects-store.js";
-        import { store as chatsStore } from "/components/sidebar/chats/chats-store.js";
+        import { store } from "/components/projects/projects-store.js";
     </script>
 </head>
 
 <body>
-    <div x-data>
-        <template x-if="$store.projects && $store.chats">
-            <div>
-                <p class="projects-intro">Projects in Agent Zero are used to separate different use cases with custom
-                    instructions and files.
-                    You can create projects for your tasks and switch between them easily.</p>
+    <div x-data="{ query: '' }">
+        <template x-if="$store.projects">
+            <div class="projects-list-container">
                 <div class="projects-list-header">
-                    <div x-show="$store.chats.selectedContext && $store.chats.selectedContext?.project" class="active-project-display">
-                        <span style="display: inline-flex; align-items: center; gap: 0.5em;">
-                            <span>Active:</span>
-                            <span class="project-color-ball" :style="$store.chats.selectedContext?.project?.color ? { backgroundColor: $store.chats.selectedContext?.project?.color } : { border: '1px solid var(--color-border)' }"></span>
-                            <strong x-text="$store.chats.selectedContext?.project?.name"></strong>
-                        </span>
+                    <div x-show="$store.chats.selectedContext?.project?.name" class="active-project-display">
+                        <span class="project-color-ball" :style="$store.chats.selectedContext?.project?.color ? { backgroundColor: $store.chats.selectedContext?.project?.color } : { border: '1px solid var(--color-border)' }"></span>
+                        <strong x-text="$store.chats.selectedContext?.project?.name"></strong>
                         <button type="button" class="button cancel icon-button" title="Deactivate" @click="$store.projects.deactivateProject()">
                             <span class="icon material-symbols-outlined">close</span>
                         </button>
@@ -29,42 +24,51 @@
                             <span class="icon material-symbols-outlined">edit</span>
                         </button>
                     </div>
-                    <button @click="$store.projects.openCreateModal()" type="button"
-                        class="button projects-create-btn-top">
+                    <button @click="$store.projects.openCreateModal()" type="button" class="button projects-create-btn-top">
                         <span class="icon material-symbols-outlined">add</span> Create project
                     </button>
                 </div>
 
-                <template :key="project.name" x-for="project in $store.projects.projectList">
+                <div class="projects-filter-wrap">
+                    <input type="search" class="projects-filter-input" placeholder="Filter projects" x-model.trim="query" @keydown.escape="query = ''" aria-label="Filter projects" />
+                    <button type="button" class="projects-filter-clear" x-show="query" @click="query = ''" title="Clear projects filter">Clear</button>
+                </div>
+
+                <template :key="project.name" x-for="project in $store.projects.projectList.filter((project) => !query || (project.title + ' ' + project.name).toLowerCase().includes(query.toLowerCase()))">
                     <div class="projects-project-card" :class="{ 'projects-active': project.name === $store.chats.selectedContext?.project?.name }">
                         <div class="projects-project-card-header" style="display: flex; align-items: start; justify-content: space-between; gap: 1em;">
-  <div>
-    <div class="projects-project-card-title">
-        <span class="project-color-ball" :style="project.color ? { backgroundColor: project.color } : { border: '1px solid var(--color-border)' }"></span>
-        <span x-text="project.title"></span>
-    </div>
-    <div class="projects-project-card-name">/<span x-text="project.name"></span></div>
-  </div>
-  <div class="projects-project-card-actions" style="display: flex; gap: 0.5em;">
-    <template x-if="$store.chats.selectedContext && project.name === $store.chats.selectedContext?.project?.name">
-      <button type="button" class="button cancel" title="Deactivate" style="width:9em" @click="$store.projects.deactivateProject()">
-        <span class="icon material-symbols-outlined">close</span> Deactivate
-      </button>
-    </template>
-    <template x-if="$store.chats.selectedContext && project.name !== $store.chats.selectedContext?.project?.name">
-      <button type="button" class="button confirm" title="Activate" style="width:9em" @click="$store.projects.activateProject(project.name)">
-        <span class="icon material-symbols-outlined">play_arrow</span> Activate
-      </button>
-    </template>
-    <button type="button" class="button icon-button" title="Edit" @click="$store.projects.openEditModal(project.name)">
-      <span class="icon material-symbols-outlined">edit</span>
-    </button>
-    <button type="button" class="button cancel icon-button" title="Delete" @click="$confirmClick($event, () => $store.projects.deleteProject(project.name))">
-      <span class="icon material-symbols-outlined">delete</span>
-    </button>
-  </div>
-</div>
-<!-- <div class="projects-project-card-description"><span x-text="project.description"></span></div> -->
+                            <div>
+                                <div class="projects-project-card-title">
+                                    <span class="project-color-ball" :style="project.color ? { backgroundColor: project.color } : { border: '1px solid var(--color-border)' }"></span>
+                                    <span x-text="project.title"></span>
+                                </div>
+                                <div class="projects-project-card-name">/<span x-text="project.name"></span></div>
+                            </div>
+                            <div class="projects-project-card-actions" style="display: flex; gap: 0.5em;">
+                                <template x-if="$store.chats.selectedContext && project.name === $store.chats.selectedContext?.project?.name">
+                                    <button type="button" class="button cancel" title="Deactivate" style="width:9em" @click="$store.projects.deactivateProject()">
+                                        <span class="icon material-symbols-outlined">close</span> Deactivate
+                                    </button>
+                                </template>
+                                <template x-if="$store.chats.selectedContext && project.name !== $store.chats.selectedContext?.project?.name">
+                                    <button type="button" class="button confirm" title="Activate" style="width:9em" @click="$store.projects.activateProject(project.name)">
+                                        <span class="icon material-symbols-outlined">play_arrow</span> Activate
+                                    </button>
+                                </template>
+                                <button type="button" class="button icon-button" title="Edit" @click="$store.projects.openEditModal(project.name)">
+                                    <span class="icon material-symbols-outlined">edit</span>
+                                </button>
+                                <button type="button" class="button cancel icon-button" title="Delete" @click="$confirmClick($event, () => $store.projects.deleteProject(project.name))">
+                                    <span class="icon material-symbols-outlined">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <template x-if="$store.projects.projectList.length > 0 && query && !$store.projects.projectList.some((project) => (project.title + ' ' + project.name).toLowerCase().includes(query.toLowerCase()))">
+                    <div class="projects-no-projects">
+                        <div class="projects-project-card-title">No projects match your filter</div>
                     </div>
                 </template>
 
@@ -72,22 +76,50 @@
                     <div class="projects-no-projects">
                         <div class="projects-project-card-title">There are no projects yet</div>
                         <div class="projects-no-projects-actions">
-                            <button @click="$store.projects.openCreateModal()" type="button"
-                                class="button"><span class="icon material-symbols-outlined">add</span>Create project</button>
+                            <button @click="$store.projects.openCreateModal()" type="button" class="button"><span class="icon material-symbols-outlined">add</span>Create project</button>
                         </div>
                     </div>
                 </template>
-
             </div>
         </template>
     </div>
 </body>
+
 <style>
+    .projects-filter-wrap {
+        margin: 0.2rem var(--spacing-md) 0;
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+    }
+
+    .projects-filter-input {
+        width: 100%;
+        padding: 0.48rem 0.62rem;
+        border: 1px solid var(--color-border);
+        border-radius: 0.55rem;
+        background: color-mix(in srgb, var(--color-panel) 88%, transparent);
+        color: var(--color-text);
+        font-size: 0.82rem;
+    }
+
+    .projects-filter-clear {
+        border: 1px solid var(--color-border);
+        border-radius: 0.45rem;
+        padding: 0.34rem 0.5rem;
+        background: transparent;
+        color: var(--color-text-muted);
+        font-size: 0.72rem;
+        cursor: pointer;
+    }
+
     .projects-project-card {
         border: 1px solid var(--color-border);
         border-radius: 0.5em;
         padding: 1em;
         margin-top: 1em;
+        background: color-mix(in srgb, var(--color-panel) 88%, transparent);
+        box-shadow: var(--elevation-1);
     }
 
     .projects-project-card.projects-active {
@@ -100,6 +132,7 @@
         display: flex;
         align-items: center;
     }
+
     .projects-project-card-name {
         margin-top: var(--spacing-xs);
     }
@@ -112,11 +145,6 @@
         margin-right: 0.5em;
         flex-shrink: 0;
         box-sizing: border-box;
-    }
-
-    .projects-project-card-description {
-        font-size: 0.9em;
-        color: var(--color-text);
     }
 
     .projects-no-projects {
@@ -157,19 +185,22 @@
         margin-right: auto;
     }
 
-  @media (max-width: 600px) {
-    .projects-list-header {
-      flex-wrap: wrap;
-      gap: 1em;
+    @media (max-width: 600px) {
+        .projects-list-header {
+            flex-wrap: wrap;
+            gap: 1em;
+        }
+
+        .projects-project-card-header {
+            flex-direction: column;
+            gap: 1em;
+        }
+
+        .active-project-display {
+            width: 100%;
+            justify-content: space-between;
+        }
     }
-    .projects-project-card-header {
-      flex-direction: column;
-      gap: 1em;
-    }
-    .active-project-display {
-      width: 100%;
-      justify-content: space-between;
-    }
-  }
 </style>
+
 </html>
