@@ -9,7 +9,7 @@
 <body>
   <div x-data>
     <template x-if="$store.chats">
-      <div class="chats-list-container" x-data>
+      <div class="chats-list-container" x-data='{ query: "" }'>
         <div class="section-header-row">
           <h3 class="section-header">Chats</h3>
           <!-- New Chat Button -->
@@ -20,8 +20,14 @@
 
 
 
+
+        <div class="sidebar-filter-wrap">
+          <input class="sidebar-filter-input" type="search" placeholder="Filter chats" x-model.trim="query" @keydown.escape="query = ''" aria-label="Filter chats" />
+          <button type="button" class="sidebar-filter-clear" x-show="query" @click="query = ''" @keydown.escape.stop="query = ''" title="Clear chats filter">Clear</button>
+        </div>
+
         <ul class="config-list chats-config-list no-scrollbar" x-show="$store.chats.contexts.length > 0">
-          <template x-for="context in $store.chats.contexts" :key="context.id">
+          <template x-for="context in $store.chats.contexts.filter((ctx) => !query || (ctx.name ? ctx.name.toLowerCase() : ('chat #' + ctx.no).toLowerCase()).includes(query.toLowerCase()))" :key="context.id">
             <li>
               <div :class="{'chat-container': true, 'chat-selected': context.id === $store.chats.selected}"
                 @click="$store.chats.selectChat(context.id)">
@@ -40,6 +46,9 @@
         </ul>
         <div class="empty-list-message" x-show="$store.chats.contexts.length === 0">
           <p><i>No chats to list.</i></p>
+        </div>
+        <div class="empty-list-message" x-show="$store.chats.contexts.length > 0 && query && !$store.chats.contexts.some((ctx) => (ctx.name ? ctx.name.toLowerCase() : ('chat #' + ctx.no).toLowerCase()).includes(query.toLowerCase()))">
+          <p><i>No chats match your filter.</i></p>
         </div>
       </div>
     </template>
@@ -85,7 +94,8 @@
       justify-content: space-between;
       width: 100%;
       min-height: 40px;
-      border-radius: 4px;
+      border-radius: 0.65rem;
+      border: 1px solid transparent;
       overflow: hidden;
       cursor: pointer;
     }
@@ -122,6 +132,7 @@
 
     .chat-container:hover{
       background-color: var(--color-background-hover);
+      border-color: color-mix(in srgb, var(--color-highlight) 45%, transparent);
     }
 
     .device-pointer .chat-container .chat-list-action-btn {
@@ -159,15 +170,50 @@
     }
 
     /* Selected chat accent */
+    .chat-selected {
+      background: color-mix(in srgb, var(--color-highlight) 18%, transparent);
+      border-color: color-mix(in srgb, var(--color-highlight) 58%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-highlight) 45%, transparent);
+    }
+
     .chat-selected .chat-name {
       font-size: var(--font-size-normal);
-      font-weight: bold;
+      font-weight: 600;
     }
 
     /* .chat-list-button.font-bold { position: relative; background-color: var(--color-border) 0.05; } */
     /* .chat-list-button.font-bold::before { content: ""; position: absolute; left: 0; top: 0; height: 100%; width: 3px; background-color: var(--color-border); border-top-left-radius: 3px; border-bottom-left-radius: 3px; } */
     /* .light-mode .chat-list-button.font-bold { background-color: var(--color-border) 0.05; } */
     /* .light-mode .chat-list-button.font-bold::before { background-color: var(--color-border); } */
+  
+
+    .sidebar-filter-wrap {
+      margin-bottom: 0.45rem;
+      display: flex;
+      gap: 0.45rem;
+      align-items: center;
+    }
+
+    .sidebar-filter-input {
+      width: 100%;
+      padding: 0.42rem 0.58rem;
+      border-radius: 0.55rem;
+      border: 1px solid var(--color-border);
+      background: color-mix(in srgb, var(--color-panel) 85%, transparent);
+      color: var(--color-text);
+      font-size: 0.78rem;
+    }
+
+    .sidebar-filter-clear {
+      border: 1px solid var(--color-border);
+      border-radius: 0.45rem;
+      padding: 0.34rem 0.5rem;
+      background: transparent;
+      color: var(--color-text-muted);
+      font-size: 0.72rem;
+      cursor: pointer;
+    }
+
   </style>
 </body>
 

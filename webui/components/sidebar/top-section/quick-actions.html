@@ -101,7 +101,7 @@
 
       <button class="dropdown-item" @click="$confirmClick($event, () => { $store.chats.restart(); dropdownOpen = false })">
         <span class="material-symbols-outlined">restart_alt</span>
-        <span>Restart A0</span>
+        <span>Restart AgentStation</span>
       </button>
 
     </div>
@@ -130,14 +130,14 @@
 
   /* Config button - icon only style */
   .config-button {
-    background-color: var(--color-panel);
-    border: 0.05rem solid var(--color-border);
+    background: color-mix(in srgb, var(--color-panel) 88%, transparent);
+    border: 0.05rem solid color-mix(in srgb, var(--color-highlight) 32%, transparent);
     border-radius: 6px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0.8;
+    opacity: 0.95;
     padding: var(--spacing-xs);
     flex: 1;
     min-width: 0;
@@ -174,10 +174,11 @@
   }
 
   .config-button:hover {
-    background-color: var(--color-background-hover);
+    background: color-mix(in srgb, var(--color-highlight) 14%, var(--color-panel));
     opacity: 1;
     z-index: 1;
     position: relative;
+    transform: translateY(-1px);
   }
 
   .config-button:active {
@@ -249,6 +250,17 @@
   /* Transition helpers */
   .-translate-y-1 { transform: translateY(-0.25rem); }
   .translate-y-0 { transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .config-button {
+      min-height: 2.6rem;
+      border-radius: 0.55rem;
+    }
+
+    #quick-actions {
+      gap: 0.18rem;
+    }
+  }
 </style>
 
 </html>

@@ -66,6 +66,52 @@ docker run -p 50001:80 agent0ai/agent-zero
 # Visit http://localhost:50001 to start
 ```
 
+Local source run (for pre-cloud verification):
+
+```bash
+git clone https://github.com/agent0ai/agent-zero.git
+cd agent-zero
+python run_ui.py
+```
+
+Build a fresh Docker image with **your local changes** (recommended before deploy):
+
+```bash
+git clone https://github.com/agent0ai/agent-zero.git
+cd agent-zero
+docker build -f DockerfileLocal -t agent-zero-local --build-arg CACHE_DATE=$(date +%Y-%m-%d:%H:%M:%S) .
+mkdir -p ./agentstation-data/usr
+docker run -d --name agent-zero-local -p 50001:80 -v "$(pwd)/agentstation-data/usr:/a0/usr" agent-zero-local
+```
+
+Open `http://localhost:50001`.
+
+Windows PowerShell equivalent:
+
+```powershell
+git clone https://github.com/agent0ai/agent-zero.git
+cd agent-zero
+docker build -f DockerfileLocal -t agent-zero-local --build-arg CACHE_DATE=$(Get-Date -Format "yyyy-MM-dd:HH:mm:ss") .
+New-Item -ItemType Directory -Force -Path .\agentstation-data\usr | Out-Null
+docker run -d --name agent-zero-local -p 50001:80 -v "${PWD}\agentstation-data\usr:/a0/usr" agent-zero-local
+```
+
+### Windows local dependency setup (source run)
+
+If you run from source on Windows (instead of Docker), use a virtual environment and install dependencies first:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\activate
+python -m pip install --upgrade pip setuptools wheel
+pip install -r requirements.txt
+python run_ui.py
+```
+
+If you previously saw `ModuleNotFoundError: No module named 'uvicorn'`, it means dependency installation did not complete. Re-run `pip install -r requirements.txt` inside the activated venv.
+
+If `faiss-cpu` failed to resolve on Windows, update to the latest repo and reinstall; requirements now allow currently published `faiss-cpu` versions (`>=1.12.0,<1.14.0`).
+
 
 # 💡 Key Features
 
@@ -163,6 +209,10 @@ docker run -p 50001:80 agent0ai/agent-zero
 | [Architecture](./docs/developer/architecture.md) | System design and components |
 | [Contributing](./docs/guides/contribution.md) | How to contribute |
 | [Troubleshooting](./docs/guides/troubleshooting.md) | Common issues and their solutions |
+| [Testing Deploy (No Auth)](./docs/setup/deployment-testing-no-auth.md) | Fast deployment and interface access guide for test environments |
+| [Platform Test Matrix](./docs/qa/platform-test-matrix.md) | Release readiness checklist across backend, UI, sessions, files, scheduler, and security |
+| [SaaS Sprint Plan](./docs/saas/agentstation-implementation-sprints.md) | Practical 3-sprint implementation roadmap for tenancy, reliability, and differentiation |
+| [Pricing Plan Draft](./docs/saas/agentstation-pricing-plan-draft.md) | Draft pricing model and guardrails for staged rollout |
 
 
 ## 🎯 Changelog

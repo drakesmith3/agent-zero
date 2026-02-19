@@ -549,6 +549,20 @@ A0_SET_agent_profile=custom
 A0_SET_agent_memory_subdir=production
 ```
 
+
+
+**Provider API keys (.env):**
+
+For OpenRouter-backed models, set one of these variables in `.env`:
+
+```env
+API_KEY_OPENROUTER=your_openrouter_key_here
+# or
+OPENROUTER_API_KEY=your_openrouter_key_here
+```
+
+> Do not commit real API keys to Git. Keep secrets only in local `.env` or secret managers.
+
 **Docker usage:**
 
 When running Docker, you can pass these as environment variables:

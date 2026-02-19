@@ -10,9 +10,9 @@
   overflow-y: scroll;
   overflow-x: hidden;
   scroll-behavior: auto !important; /* avoid infinite scrolling! */
-  padding-left: var(--spacing-sm) !important;
-  padding-right: var(--spacing-md) !important;
-  padding-top: 4rem !important;
+  padding-left: clamp(0.5rem, 1vw, 1rem) !important;
+  padding-right: clamp(0.7rem, 1.4vw, 1.35rem) !important;
+  padding-top: 4.1rem !important;
   padding-bottom: 4rem !important;
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
@@ -234,6 +234,7 @@
 }
 
 .message-body .code-block-wrapper{
+  background: color-mix(in srgb, var(--color-panel) 65%, transparent);
   max-width: 100%;
   overflow-x: auto;
   padding: 0.5em;
@@ -463,9 +464,9 @@
 
 @media (max-width: 1024px) {
   #chat-history {
-    padding-left: var(--spacing-sm) !important;
-    padding-right: var(--spacing-md) !important;
-    padding-top: 4rem !important;
+    padding-left: clamp(0.5rem, 1vw, 1rem) !important;
+    padding-right: clamp(0.7rem, 1.4vw, 1.35rem) !important;
+    padding-top: 4.1rem !important;
     padding-bottom: 3rem !important;
   }
 }
@@ -771,4 +772,13 @@
   to {
     opacity: 0;
   }
+}
+
+.message, .message-body, .message-text {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.message-body pre, .message-body code {
+  font-family: var(--font-family-code);
 }

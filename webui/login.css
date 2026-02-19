@@ -1,5 +1,5 @@
 body {
-    background-color: #131313;
+    background-color: #0b1020;
     color: #d4d4d4;
     font-family: "Rubik", Arial, Helvetica, sans-serif;
     display: flex;
@@ -17,7 +17,9 @@ body {
 }
 
 .login-form {
-    background-color: #1a1a1a;
+    background: rgba(15, 23, 45, 0.94);
+    border: 1px solid rgba(138, 160, 255, 0.25);
+    backdrop-filter: blur(4px);
     padding: 2rem;
     border-radius: 1.125rem;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
@@ -51,9 +53,9 @@ h2 {
 .input-group input {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #444444a8;
+    border: 1px solid rgba(138, 160, 255, 0.3);
     border-radius: 0.5rem;
-    background-color: #131313;
+    background-color: #0b1020;
     color: #d4d4d4;
     font-size: 1rem;
     box-sizing: border-box; /* Added for consistent padding */
@@ -75,7 +77,22 @@ button:hover {
     background-color: #353bc5;
 }
 
+.input-group input:focus-visible {
+    outline: none;
+    border-color: #7da2ff;
+    box-shadow: 0 0 0 3px rgba(125, 162, 255, 0.22);
+}
+
 .error {
     color: #cf6679;
     margin-top: 1rem;
+}
+
+
+.brand-tagline {
+    margin-top: -1.2rem;
+    margin-bottom: 1.6rem;
+    color: #afbddb;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
 }

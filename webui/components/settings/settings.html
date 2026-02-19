@@ -29,31 +29,44 @@
       <div x-show="$store.settings.settings" class="settings-content">
         <!-- Tab Navigation -->
         <div class="settings-tabs-container">
+          <div class="settings-tabs-toolbar">
+            <input type="search" class="settings-tab-filter" placeholder="Find section" x-model.trim="$store.settings.tabFilter" @input="$store.settings.setTabFilter($event.target.value)" @keydown.escape="$store.settings.setTabFilter('')" aria-label="Find settings section" />
+            <button type="button" class="settings-tab-clear" x-show="$store.settings.tabFilter" @click="$store.settings.setTabFilter('')" title="Clear settings filter">Clear</button>
+          </div>
           <div class="settings-tabs no-scrollbar">
             <div class="settings-tab"
+                 x-show="$store.settings.filteredTabs.includes('agent')"
                  :class="{'active': $store.settings.activeTab === 'agent'}"
                  @click="$store.settings.switchTab('agent')"
                  title="Agent Settings">Agent Settings</div>
             <div class="settings-tab"
+                 x-show="$store.settings.filteredTabs.includes('skills')"
                  :class="{'active': $store.settings.activeTab === 'skills'}"
                  @click="$store.settings.switchTab('skills')"
                  title="Skills">Skills</div>
             <div class="settings-tab"
+                 x-show="$store.settings.filteredTabs.includes('external')"
                  :class="{'active': $store.settings.activeTab === 'external'}"
                  @click="$store.settings.switchTab('external')"
                  title="External Services">External Services</div>
             <div class="settings-tab" 
+                 x-show="$store.settings.filteredTabs.includes('mcp')"
                  :class="{'active': $store.settings.activeTab === 'mcp'}"
                  @click="$store.settings.switchTab('mcp')" 
                  title="MCP">MCP/A2A</div>
             <div class="settings-tab" 
+                 x-show="$store.settings.filteredTabs.includes('developer')"
                  :class="{'active': $store.settings.activeTab === 'developer'}"
                  @click="$store.settings.switchTab('developer')" 
                  title="Developer">Developer</div>
             <div class="settings-tab"
+                 x-show="$store.settings.filteredTabs.includes('backup')"
                  :class="{'active': $store.settings.activeTab === 'backup'}"
                  @click="$store.settings.switchTab('backup')"
                  title="Backup & Restore">Backup & Restore</div>
+          </div>
+          <div class="settings-tab-no-match" x-show="$store.settings.tabFilter && !$store.settings.hasTabFilterMatches">
+            No settings sections match your filter.
           </div>
         </div>
 
@@ -76,6 +89,9 @@
           </div>
           <div x-show="$store.settings.activeTab === 'skills'">
             <x-component path="settings/skills/skills-settings.html"></x-component>
+          </div>
+          <div class="settings-tab-no-match" x-show="$store.settings.tabFilter && !$store.settings.hasTabFilterMatches">
+            No settings sections match your filter.
           </div>
         </div>
       </div>
@@ -138,5 +154,39 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+
+.settings-tabs-toolbar {
+  margin-bottom: 0.55rem;
+}
+
+.settings-tab-filter {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 0.55rem;
+  background: color-mix(in srgb, var(--color-panel) 86%, transparent);
+  color: var(--color-text);
+  padding: 0.45rem 0.6rem;
+  font-size: 0.82rem;
+}
+
+.settings-tab-clear {
+  margin-top: 0.45rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.45rem;
+  background: transparent;
+  color: var(--color-text-muted);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.settings-tab-no-match {
+  margin-top: 0.5rem;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
 </style>
 
