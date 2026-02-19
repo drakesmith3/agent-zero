@@ -74,6 +74,17 @@ cd agent-zero
 python run_ui.py
 ```
 
+Build a fresh Docker image with **your local changes** (recommended before deploy):
+
+```bash
+git clone https://github.com/agent0ai/agent-zero.git
+cd agent-zero
+docker build -t agent-zero-local .
+docker run -d --name agent-zero-local -p 50001:80 -v "$(pwd)/agentstation-data/usr:/a0/usr" agent-zero-local
+```
+
+Open `http://localhost:50001`.
+
 ### Windows local dependency setup (source run)
 
 If you run from source on Windows (instead of Docker), use a virtual environment and install dependencies first:
